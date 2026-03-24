@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0071)file:///C:/Users/Alex/Downloads/enquete-satisfaction-plurielles(1).html -->
+<!-- saved from url=(0071)file:///C:/Users/Alex/Downloads/enquete-satisfaction-plurielles(2).html -->
 <html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -191,7 +191,6 @@ body {
   border-radius: 100px;
   margin-bottom: 20px;
 }
-.section-tag .icon { font-size: 14px; }
 
 .question {
   margin-bottom: 28px;
@@ -475,7 +474,7 @@ body {
 
     <!-- Section 1 : Satisfaction globale -->
     <div class="section">
-      <div class="section-tag"><span class="icon">⭐</span> Satisfaction globale</div>
+      <div class="section-tag">01 — Satisfaction globale</div>
 
       <div class="question" data-q="q5">
         <div class="q-label"><span class="q-number">1</span><span>Globalement, quel est votre niveau de satisfaction concernant nos prestations ?</span></div>
@@ -514,7 +513,7 @@ body {
 
     <!-- Section 2 : Qualité de la prestation -->
     <div class="section">
-      <div class="section-tag"><span class="icon">🎯</span> Qualité de la prestation</div>
+      <div class="section-tag">02 — Qualité de la prestation</div>
 
       <div class="question" data-q="q7">
         <div class="q-label"><span class="q-number">3</span><span>Comment évaluez-vous les éléments suivants ?</span></div>
@@ -538,7 +537,7 @@ body {
 
     <!-- Section 3 : Relation avec l'agence -->
     <div class="section">
-      <div class="section-tag"><span class="icon">🤝</span> Relation avec l'agence</div>
+      <div class="section-tag">03 — Relation avec l'agence</div>
 
       <div class="question" data-q="q8">
         <div class="q-label"><span class="q-number">4</span><span>Comment évaluez-vous les points suivants ?</span></div>
@@ -561,7 +560,7 @@ body {
 
     <!-- Section 4 : Organisation des prestations -->
     <div class="section">
-      <div class="section-tag"><span class="icon">⚙️</span> Organisation des prestations</div>
+      <div class="section-tag">04 — Organisation des prestations</div>
 
       <div class="question" data-q="q9">
         <div class="q-label"><span class="q-number">5</span><span>Comment évaluez-vous les éléments suivants ?</span></div>
@@ -584,7 +583,7 @@ body {
 
     <!-- Section 5 : Valeur ajoutée & rapport qualité/prix -->
     <div class="section">
-      <div class="section-tag"><span class="icon">💡</span> Valeur ajoutée</div>
+      <div class="section-tag">05 — Valeur ajoutée</div>
 
       <div class="question" data-q="q10">
         <div class="q-label"><span class="q-number">6</span><span>Selon vous, notre agence est-elle force de proposition et apporte-t-elle des solutions innovantes ?</span></div>
@@ -609,7 +608,7 @@ body {
 
     <!-- Section 6 : RSE -->
     <div class="section">
-      <div class="section-tag"><span class="icon">🌿</span> RSE &amp; Engagement</div>
+      <div class="section-tag">06 — RSE &amp; Engagement</div>
 
       <div class="question" data-q="q12">
         <div class="q-label"><span class="q-number">8</span><span>L'agence Pluri'Elles est certifiée EcoVadis. Cela renforce-t-il votre confiance dans nos prestations ?</span></div>
@@ -635,7 +634,7 @@ body {
 
     <!-- Section 7 : Amélioration continue -->
     <div class="section">
-      <div class="section-tag"><span class="icon">📈</span> Amélioration continue</div>
+      <div class="section-tag">07 — Amélioration continue</div>
 
       <div class="question" data-q="q14">
         <div class="q-label"><span class="q-number">10</span><span>Quels sont selon vous nos principaux points forts ?</span></div>
@@ -650,7 +649,7 @@ body {
 
     <!-- Section 8 : Développement des services -->
     <div class="section">
-      <div class="section-tag"><span class="icon">🚀</span> Développement des services</div>
+      <div class="section-tag">08 — Développement des services</div>
 
       <div class="question" data-q="q16">
         <div class="q-label"><span class="q-number">12</span><span>Seriez-vous intéressé par :</span></div>
@@ -668,7 +667,7 @@ body {
 
     <!-- Section 9 : Commentaire final -->
     <div class="section">
-      <div class="section-tag"><span class="icon">💬</span> Commentaire final</div>
+      <div class="section-tag">09 — Commentaire final</div>
 
       <div class="question" data-q="q17">
         <div class="q-label"><span class="q-number">13</span><span>Souhaitez-vous ajouter un commentaire ou une suggestion ?</span></div>
@@ -832,7 +831,7 @@ function handleSubmit(e) {
   // ═══════════════════════════════════════════════════════════
   // WEBHOOK n8n — REMPLACER L'URL CI-DESSOUS PAR LA VÔTRE
   // ═══════════════════════════════════════════════════════════
-  const WEBHOOK_URL = 'https://n8n.srv1501565.hstgr.cloud/webhook/enquete-reponse';
+  const WEBHOOK_URL = 'https://TON-INSTANCE.app.n8n.cloud/webhook/enquete-reponse';
   
   // Désactiver le bouton pendant l'envoi
   const btn = document.querySelector('.submit-btn');
