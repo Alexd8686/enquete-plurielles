@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<!-- saved from url=(0071)file:///C:/Users/Alex/Downloads/enquete-satisfaction-plurielles(1).html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enquête de satisfaction — Pluri'Elles</title>
+<link href="./index_files/css2" rel="stylesheet">
+<style>
+:root {
+  --violet: #6247AA;
+  --violet-dark: #4A3580;
+  --violet-light: #CEC2F0;
+  --violet-bg: #ECEBF5;
+  --black: #0D0B11;
+  --white: #FFFFFF;
+  --gray-50: #F8F7FC;
+  --gray-100: #EEEDF3;
+  --gray-200: #D8D6E0;
+  --gray-400: #9994AD;
+  --gray-600: #5C586E;
+  --success: #34D399;
+  --warning: #FBBF24;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--violet-bg);
+  color: var(--black);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Animated Background ─── */
+.bg-shapes {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; overflow: hidden;
+}
+.bg-shapes .shape {
+  position: absolute; border-radius: 50%; opacity: 0.08;
+  background: var(--violet);
+  animation: float 20s ease-in-out infinite;
+}
+.bg-shapes .shape:nth-child(1) { width: 400px; height: 400px; top: -100px; right: -100px; animation-delay: 0s; }
+.bg-shapes .shape:nth-child(2) { width: 300px; height: 300px; bottom: 10%; left: -80px; animation-delay: -7s; }
+.bg-shapes .shape:nth-child(3) { width: 200px; height: 200px; top: 40%; right: 5%; animation-delay: -14s; }
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* ─── Container ─── */
+.survey-container {
+  position: relative; z-index: 1;
+  max-width: 780px; margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+/* ─── Header ─── */
+.survey-header {
+  background: linear-gradient(135deg, var(--violet) 0%, var(--violet-dark) 100%);
+  border-radius: 24px;
+  padding: 48px 44px;
+  color: var(--white);
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(98, 71, 170, 0.3);
+}
+.survey-header::before {
+  content: '';
+  position: absolute; top: -50%; right: -20%;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.survey-header::after {
+  content: '';
+  position: absolute; bottom: -30%; left: -10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.header-content { position: relative; z-index: 1; }
+.logo-area {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px;
+}
+.logo-img {
+  height: 56px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+  transition: opacity 0.3s;
+}
+.logo-img:hover { opacity: 1; }
+.header-greeting {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 600;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+.header-context {
+  font-size: 16px; line-height: 1.6;
+  opacity: 0.9;
+  max-width: 580px;
+}
+.header-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-size: 13px; font-weight: 500;
+  margin-top: 20px;
+}
+.header-badge .dot {
+  width: 8px; height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ─── Progress Bar ─── */
+.progress-wrapper {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 20px 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(98, 71, 170, 0.06);
+}
+.progress-info {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px;
+}
+.progress-label { font-size: 14px; font-weight: 600; color: var(--violet); }
+.progress-count { font-size: 13px; color: var(--gray-400); }
+.progress-bar {
+  height: 6px;
+  background: var(--gray-100);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--violet), var(--violet-light));
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 0%;
+}
+
+/* ─── Section Cards ─── */
+.section {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 36px 32px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 16px rgba(98, 71, 170, 0.05);
+  border: 1px solid transparent;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  animation: slideUp 0.5s ease-out both;
+}
+.section:hover {
+  border-color: var(--violet-light);
+  box-shadow: 0 4px 24px rgba(98, 71, 170, 0.1);
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.section:nth-child(2) { animation-delay: 0.05s; }
+.section:nth-child(3) { animation-delay: 0.1s; }
+.section:nth-child(4) { animation-delay: 0.15s; }
+.section:nth-child(5) { animation-delay: 0.2s; }
+
+.section-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--violet-bg);
+  color: var(--violet);
+  font-size: 12px; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+}
+.section-tag .icon { font-size: 14px; }
+
+.question {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.question:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+.q-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  background: var(--violet);
+  color: var(--white);
+  font-size: 13px; font-weight: 700;
+  border-radius: 8px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.q-label {
+  font-size: 16px; font-weight: 600;
+  line-height: 1.4;
+  color: var(--black);
+  display: flex; align-items: flex-start;
+  margin-bottom: 16px;
+}
+.q-label span { padding-top: 3px; }
+
+/* ─── NPS Scale ─── */
+.nps-scale {
+  display: flex; gap: 6px;
+  flex-wrap: wrap;
+}
+.nps-btn {
+  flex: 1; min-width: 44px;
+  height: 48px;
+  border: 2px solid var(--gray-200);
+  border-radius: 12px;
+  background: var(--white);
+  font-size: 16px; font-weight: 600;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.nps-btn:hover {
+  border-color: var(--violet-light);
+  background: var(--violet-bg);
+  color: var(--violet);
+}
+.nps-btn.selected {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: var(--white);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(98, 71, 170, 0.3);
+}
+.nps-labels {
+  display: flex; justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px; color: var(--gray-400); font-weight: 500;
+}
+
+/* ─── Matrix ─── */
+.matrix-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+.matrix-table thead th {
+  font-size: 11px; font-weight: 600;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 6px 12px;
+  text-align: center;
+}
+.matrix-table thead th:first-child { text-align: left; }
+.matrix-table tbody tr {
+  background: var(--gray-50);
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+.matrix-table tbody tr:hover { background: var(--violet-bg); }
+.matrix-table tbody td {
+  padding: 14px 6px;
+  text-align: center;
+  font-size: 14px;
+}
+.matrix-table tbody td:first-child {
+  text-align: left;
+  font-weight: 500;
+  padding-left: 16px;
+  border-radius: 12px 0 0 12px;
+}
+.matrix-table tbody td:last-child { border-radius: 0 12px 12px 0; }
+.matrix-radio {
+  appearance: none; -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border: 2px solid var(--gray-200);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.matrix-radio:hover { border-color: var(--violet-light); }
+.matrix-radio:checked {
+  border-color: var(--violet);
+  background: var(--violet);
+  box-shadow: inset 0 0 0 3px var(--white);
+}
+
+/* ─── Checkboxes & Radio options ─── */
+.option-list { display: flex; flex-direction: column; gap: 8px; }
+.option-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  background: var(--gray-50);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px; font-weight: 500;
+}
+.option-item:hover { background: var(--violet-bg); border-color: var(--violet-light); }
+.option-item.selected { background: var(--violet-bg); border-color: var(--violet); }
+.option-check {
+  width: 22px; height: 22px; flex-shrink: 0;
+  border: 2px solid var(--gray-200);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.option-item.radio .option-check { border-radius: 50%; }
+.option-item.selected .option-check {
+  background: var(--violet);
+  border-color: var(--violet);
+}
+.option-item.selected .option-check::after {
+  content: '✓';
+  color: var(--white);
+  font-size: 13px; font-weight: 700;
+}
+
+/* ─── Textarea ─── */
+.q-textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 2px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--black);
+  resize: vertical;
+  transition: border-color 0.3s;
+  background: var(--gray-50);
+}
+.q-textarea:focus {
+  outline: none;
+  border-color: var(--violet);
+  background: var(--white);
+}
+.q-textarea::placeholder { color: var(--gray-400); }
+
+/* ─── Text Input ─── */
+.q-input {
+  width: 100%;
+  height: 48px;
+  border: 2px solid var(--gray-200);
+  border-radius: 14px;
+  padding: 0 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--black);
+  transition: border-color 0.3s;
+  background: var(--gray-50);
+}
+.q-input:focus { outline: none; border-color: var(--violet); background: var(--white); }
+
+/* ─── Submit ─── */
+.submit-section {
+  text-align: center;
+  padding: 20px 0;
+}
+.submit-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, var(--violet), var(--violet-dark));
+  color: var(--white);
+  border: none;
+  padding: 18px 48px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px; font-weight: 700;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(98, 71, 170, 0.3);
+}
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(98, 71, 170, 0.4);
+}
+.submit-btn:active { transform: translateY(0); }
+
+/* ─── Thank you ─── */
+.thank-you {
+  display: none;
+  text-align: center;
+  padding: 80px 40px;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(98, 71, 170, 0.1);
+}
+.thank-you .emoji { font-size: 64px; margin-bottom: 24px; }
+.thank-you h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px; color: var(--violet);
+  margin-bottom: 12px;
+}
+.thank-you p { font-size: 16px; color: var(--gray-600); line-height: 1.6; }
+
+/* ─── Footer ─── */
+.survey-footer {
+  text-align: center;
+  padding: 32px 0;
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .survey-header { padding: 32px 24px; }
+  .header-greeting { font-size: 21px; }
+  .section { padding: 24px 20px; }
+  .nps-btn { min-width: 36px; height: 42px; font-size: 14px; }
+  .matrix-table { font-size: 12px; }
+  .matrix-table thead th { font-size: 10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-shapes">
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+</div>
+
+<div class="survey-container">
+  <!-- HEADER -->
+  <div class="survey-header">
+    <div class="header-content">
+      <div class="logo-area">
+        <img src="data:image/png;base64,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" alt="Pluri&#39;Elles" class="logo-img">
+      </div>
+      <div class="header-greeting" id="greeting">
+        Bonjour,
+      </div>
+      <div class="header-context" id="context">
+        Dans le cadre de notre démarche d'amélioration continue, nous réalisons notre baromètre de satisfaction clients. Ce questionnaire ne vous prendra que quelques minutes.
+      </div>
+      <div class="header-badge">
+        <span class="dot"></span>
+        Enquête de satisfaction 2026
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrapper">
+    <div class="progress-info">
+      <span class="progress-label">Progression</span>
+      <span class="progress-count" id="progressCount">0 / 17</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <form id="surveyForm" onsubmit="return handleSubmit(event)">
+
+    <!-- Section 1 : Satisfaction globale -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">⭐</span> Satisfaction globale</div>
+
+      <div class="question" data-q="q5">
+        <div class="q-label"><span class="q-number">1</span><span>Globalement, quel est votre niveau de satisfaction concernant nos prestations ?</span></div>
+        <div class="nps-scale" data-name="q5">
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">1</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">2</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">3</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">4</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">5</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">6</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">7</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">8</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">9</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">10</button>
+        </div>
+        <div class="nps-labels"><span>Pas du tout satisfait</span><span>Très satisfait</span></div>
+      </div>
+
+      <div class="question" data-q="q6">
+        <div class="q-label"><span class="q-number">2</span><span>Recommanderiez-vous notre agence à un partenaire ou une autre entreprise ?</span></div>
+        <div class="nps-scale" data-name="q6">
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">1</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">2</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">3</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">4</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">5</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">6</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">7</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">8</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">9</button>
+          <button type="button" class="nps-btn" onclick="selectNPS(this)">10</button>
+        </div>
+        <div class="nps-labels"><span>Pas du tout probable</span><span>Très probable</span></div>
+      </div>
+    </div>
+
+    <!-- Section 2 : Qualité de la prestation -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">🎯</span> Qualité de la prestation</div>
+
+      <div class="question" data-q="q7">
+        <div class="q-label"><span class="q-number">3</span><span>Comment évaluez-vous les éléments suivants ?</span></div>
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th style="width:35%"></th>
+              <th>Très satisfait</th><th>Satisfait</th><th>Moyen</th><th>Peu satisfait</th><th>Pas satisfait</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Qualité globale de la prestation</td><td><input type="radio" class="matrix-radio" name="q7a" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7a" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7a" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7a" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7a" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Professionnalisme du personnel</td><td><input type="radio" class="matrix-radio" name="q7b" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7b" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7b" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7b" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7b" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Présentation / image</td><td><input type="radio" class="matrix-radio" name="q7c" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7c" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7c" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7c" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7c" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Sens du service</td><td><input type="radio" class="matrix-radio" name="q7d" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7d" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7d" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7d" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7d" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Connaissance de votre entreprise</td><td><input type="radio" class="matrix-radio" name="q7e" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7e" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7e" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7e" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q7e" value="1" onchange="updateProgress()"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 3 : Relation avec l'agence -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">🤝</span> Relation avec l'agence</div>
+
+      <div class="question" data-q="q8">
+        <div class="q-label"><span class="q-number">4</span><span>Comment évaluez-vous les points suivants ?</span></div>
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th style="width:35%"></th>
+              <th>Très satisfait</th><th>Satisfait</th><th>Moyen</th><th>Peu satisfait</th><th>Pas satisfait</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Réactivité de l'agence</td><td><input type="radio" class="matrix-radio" name="q8a" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8a" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8a" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8a" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8a" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Qualité de la communication</td><td><input type="radio" class="matrix-radio" name="q8b" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8b" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8b" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8b" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8b" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Suivi par le responsable client</td><td><input type="radio" class="matrix-radio" name="q8c" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8c" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8c" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8c" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8c" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Gestion des demandes ou réclamations</td><td><input type="radio" class="matrix-radio" name="q8d" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8d" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8d" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8d" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q8d" value="1" onchange="updateProgress()"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 4 : Organisation des prestations -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">⚙️</span> Organisation des prestations</div>
+
+      <div class="question" data-q="q9">
+        <div class="q-label"><span class="q-number">5</span><span>Comment évaluez-vous les éléments suivants ?</span></div>
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th style="width:35%"></th>
+              <th>Très satisfait</th><th>Satisfait</th><th>Moyen</th><th>Peu satisfait</th><th>Pas satisfait</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Gestion des remplacements</td><td><input type="radio" class="matrix-radio" name="q9a" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9a" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9a" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9a" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9a" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Organisation de la prestation</td><td><input type="radio" class="matrix-radio" name="q9b" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9b" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9b" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9b" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9b" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Adaptation à vos besoins</td><td><input type="radio" class="matrix-radio" name="q9c" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9c" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9c" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9c" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9c" value="1" onchange="updateProgress()"></td></tr>
+            <tr><td>Qualité de l'encadrement</td><td><input type="radio" class="matrix-radio" name="q9d" value="5" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9d" value="4" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9d" value="3" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9d" value="2" onchange="updateProgress()"></td><td><input type="radio" class="matrix-radio" name="q9d" value="1" onchange="updateProgress()"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 5 : Valeur ajoutée & rapport qualité/prix -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">💡</span> Valeur ajoutée</div>
+
+      <div class="question" data-q="q10">
+        <div class="q-label"><span class="q-number">6</span><span>Selon vous, notre agence est-elle force de proposition et apporte-t-elle des solutions innovantes ?</span></div>
+        <div class="option-list" data-name="q10" data-type="radio">
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Oui, tout à fait</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Plutôt oui</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Plutôt non</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Pas du tout</span></div>
+        </div>
+      </div>
+
+      <div class="question" data-q="q11">
+        <div class="q-label"><span class="q-number">7</span><span>Comment jugez-vous le rapport qualité / prix de nos prestations ?</span></div>
+        <div class="option-list" data-name="q11" data-type="radio">
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Excellent</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Bon</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Correct</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Insuffisant</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6 : RSE -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">🌿</span> RSE &amp; Engagement</div>
+
+      <div class="question" data-q="q12">
+        <div class="q-label"><span class="q-number">8</span><span>L'agence Pluri'Elles est certifiée EcoVadis. Cela renforce-t-il votre confiance dans nos prestations ?</span></div>
+        <div class="option-list" data-name="q12" data-type="radio">
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Oui, tout à fait</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Plutôt oui</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Peu</span></div>
+          <div class="option-item radio" onclick="selectOption(this)"><div class="option-check"></div><span>Pas du tout</span></div>
+        </div>
+      </div>
+
+      <div class="question" data-q="q13">
+        <div class="q-label"><span class="q-number">9</span><span>Quelles actions RSE souhaiteriez-vous voir renforcées ?</span></div>
+        <div class="option-list" data-name="q13" data-type="checkbox">
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Réduction de l'empreinte carbone</span></div>
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Inclusion / diversité</span></div>
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Bien-être des collaborateurs</span></div>
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Digitalisation responsable</span></div>
+        </div>
+        <textarea class="q-textarea" placeholder="Autre (précisez)..." style="margin-top:10px; min-height:60px;" oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+
+    <!-- Section 7 : Amélioration continue -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">📈</span> Amélioration continue</div>
+
+      <div class="question" data-q="q14">
+        <div class="q-label"><span class="q-number">10</span><span>Quels sont selon vous nos principaux points forts ?</span></div>
+        <textarea class="q-textarea" name="q14" placeholder="Dites-nous ce que vous appréciez le plus..." oninput="updateProgress()"></textarea>
+      </div>
+
+      <div class="question" data-q="q15">
+        <div class="q-label"><span class="q-number">11</span><span>Quels axes d'amélioration souhaiteriez-vous que nous travaillions en priorité ?</span></div>
+        <textarea class="q-textarea" name="q15" placeholder="Vos suggestions nous sont précieuses..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+
+    <!-- Section 8 : Développement des services -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">🚀</span> Développement des services</div>
+
+      <div class="question" data-q="q16">
+        <div class="q-label"><span class="q-number">12</span><span>Seriez-vous intéressé par :</span></div>
+        <div class="option-list" data-name="q16" data-type="checkbox">
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>De nouvelles solutions d'accueil ou de services</span></div>
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Des innovations digitales</span></div>
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Des améliorations dans le reporting</span></div>
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Des services complémentaires type hospitality</span></div>
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Des prestations d'intérim pour vos services généraux</span></div>
+          <div class="option-item" onclick="toggleCheck(this)"><div class="option-check"></div><span>Des prestations de formation environnement de travail</span></div>
+        </div>
+        <textarea class="q-textarea" placeholder="Autre (précisez)..." style="margin-top:10px; min-height:60px;" oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+
+    <!-- Section 9 : Commentaire final -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">💬</span> Commentaire final</div>
+
+      <div class="question" data-q="q17">
+        <div class="q-label"><span class="q-number">13</span><span>Souhaitez-vous ajouter un commentaire ou une suggestion ?</span></div>
+        <textarea class="q-textarea" name="q17" placeholder="Toute remarque est la bienvenue..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-section">
+      <button type="submit" class="submit-btn">
+        Envoyer mes réponses
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+      </button>
+    </div>
+  </form>
+
+  <!-- Thank You -->
+  <div class="thank-you" id="thankYou">
+    <div class="emoji">🎉</div>
+    <h2>Merci pour votre participation !</h2>
+    <p>Vos réponses sont précieuses et nous permettront d'améliorer continuellement la qualité de nos prestations.<br>L'équipe Pluri'Elles vous remercie pour votre confiance.</p>
+  </div>
+
+  <div class="survey-footer">
+    © 2026 Pluri'Elles — Enquête de satisfaction confidentielle
+  </div>
+</div>
+
+<script>
+// ─── URL Params Personalization ───
+const params = new URLSearchParams(window.location.search);
+const civilite = params.get('civilite') || '';
+const nom = params.get('nom') || '';
+const societe = params.get('societe') || '';
+const prestations = params.get('prestations') || '';
+const depuis = params.get('depuis') || '';
+
+if (nom) {
+  const greetEl = document.getElementById('greeting');
+  const ctxEl = document.getElementById('context');
+  greetEl.textContent = `Bonjour ${civilite} ${nom},`;
+  
+  let contextText = '';
+  if (societe && depuis && prestations) {
+    contextText = `Votre société, ${societe}, est cliente de l'agence Pluri'Elles depuis ${depuis} sur des prestations ${prestations.replace(/,/g, ' et ')}.`;
+  } else if (societe && depuis) {
+    contextText = `Votre société, ${societe}, est cliente de l'agence Pluri'Elles depuis ${depuis}.`;
+  } else if (societe) {
+    contextText = `Votre société, ${societe}, est cliente de l'agence Pluri'Elles.`;
+  }
+  
+  ctxEl.innerHTML = contextText + '<br><br>Dans le cadre de notre démarche d\'amélioration continue, nous réalisons notre baromètre de satisfaction clients. Ce questionnaire ne vous prendra que quelques minutes et nous permettra d\'identifier les axes d\'amélioration prioritaires.';
+}
+
+// ─── NPS Selection ───
+function selectNPS(btn) {
+  const siblings = btn.parentElement.querySelectorAll('.nps-btn');
+  siblings.forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  updateProgress();
+}
+
+// ─── Radio Option Selection ───
+function selectOption(item) {
+  const list = item.parentElement;
+  list.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+  item.classList.add('selected');
+  updateProgress();
+}
+
+// ─── Checkbox Toggle ───
+function toggleCheck(item) {
+  item.classList.toggle('selected');
+  updateProgress();
+}
+
+// ─── Progress ───
+function updateProgress() {
+  const total = 13; // simplified question count
+  let answered = 0;
+  
+  // NPS scales
+  document.querySelectorAll('.nps-scale').forEach(scale => {
+    if (scale.querySelector('.selected')) answered++;
+  });
+  
+  // Matrix tables - count as 1 per table if at least half answered
+  document.querySelectorAll('.matrix-table').forEach(table => {
+    const radios = table.querySelectorAll('input[type="radio"]');
+    const names = new Set();
+    radios.forEach(r => names.add(r.name));
+    let checkedNames = 0;
+    names.forEach(name => { if (document.querySelector(`input[name="${name}"]:checked`)) checkedNames++; });
+    if (checkedNames >= names.size / 2) answered++;
+  });
+  
+  // Radio option lists
+  document.querySelectorAll('.option-list[data-type="radio"]').forEach(list => {
+    if (list.querySelector('.selected')) answered++;
+  });
+  
+  // Checkbox option lists
+  document.querySelectorAll('.option-list[data-type="checkbox"]').forEach(list => {
+    if (list.querySelector('.selected')) answered++;
+  });
+  
+  // Textareas with name
+  document.querySelectorAll('textarea[name]').forEach(ta => {
+    if (ta.value.trim().length > 0) answered++;
+  });
+  
+  const pct = Math.min(100, Math.round((answered / total) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = `${answered} / ${total}`;
+}
+
+// ─── Submit ───
+function handleSubmit(e) {
+  e.preventDefault();
+  
+  // Collect all data
+  const data = {
+    civilite, nom, societe, prestations, depuis,
+    timestamp: new Date().toISOString(),
+    responses: {}
+  };
+  
+  // NPS
+  document.querySelectorAll('.nps-scale').forEach(scale => {
+    const name = scale.dataset.name;
+    const sel = scale.querySelector('.selected');
+    data.responses[name] = sel ? sel.textContent : null;
+  });
+  
+  // Matrix radios
+  document.querySelectorAll('.matrix-radio:checked').forEach(r => {
+    data.responses[r.name] = r.value;
+  });
+  
+  // Radio lists
+  document.querySelectorAll('.option-list[data-type="radio"]').forEach(list => {
+    const name = list.dataset.name;
+    const sel = list.querySelector('.selected span');
+    data.responses[name] = sel ? sel.textContent : null;
+  });
+  
+  // Checkbox lists
+  document.querySelectorAll('.option-list[data-type="checkbox"]').forEach(list => {
+    const name = list.dataset.name;
+    const sels = list.querySelectorAll('.selected span');
+    data.responses[name] = Array.from(sels).map(s => s.textContent);
+  });
+  
+  // Textareas
+  document.querySelectorAll('textarea[name]').forEach(ta => {
+    data.responses[ta.name] = ta.value;
+  });
+  
+  console.log('Survey data:', JSON.stringify(data, null, 2));
+  
+  // ═══════════════════════════════════════════════════════════
+  // WEBHOOK n8n — REMPLACER L'URL CI-DESSOUS PAR LA VÔTRE
+  // ═══════════════════════════════════════════════════════════
+  const WEBHOOK_URL = 'https://TON-INSTANCE.app.n8n.cloud/webhook/enquete-reponse';
+  
+  // Désactiver le bouton pendant l'envoi
+  const btn = document.querySelector('.submit-btn');
+  btn.textContent = 'Envoi en cours...';
+  btn.disabled = true;
+  
+  fetch(WEBHOOK_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  })
+  .then(res => {
+    document.getElementById('surveyForm').style.display = 'none';
+    document.querySelector('.progress-wrapper').style.display = 'none';
+    document.getElementById('thankYou').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  })
+  .catch(err => {
+    console.error('Erreur envoi:', err);
+    // Afficher quand même le merci (les données sont dans les logs)
+    document.getElementById('surveyForm').style.display = 'none';
+    document.querySelector('.progress-wrapper').style.display = 'none';
+    document.getElementById('thankYou').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+</script>
+
+
+
+</body></html>
