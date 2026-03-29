@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PluriQuali">
+<meta name="theme-color" content="#0D0B11">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Pluri'Quali — Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--v:#6247AA;--vd:#4e3888;--vl:#7B68C4;--fog:#CEC2F0;--sil:#ECEBF5;--nv:#0D0B11;--w:#FFF;--bg:#F6F4FB;--tx:#2D2A33;--mt:#8A8494;--bd:#DDD8E8;--gn:#1B8A5A;--gn2:#D4EFDF;--rd:#A93246}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+
+/* === NAV === */
+.nav{background:var(--nv);padding:0 16px;height:56px;display:flex;align-items:center;gap:12px;flex-shrink:0;z-index:10}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:800;font-size:18px;color:var(--fog)}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--gn);margin-left:-6px;margin-top:-10px}
+.nav-sub{font-size:11px;color:var(--mt);margin-left:auto}
+.nav-btn{background:none;border:none;color:var(--fog);font-size:18px;cursor:pointer;padding:8px;opacity:.6;margin-left:4px}.nav-btn:hover{opacity:1}
+
+/* === CHAT AREA === */
+.chat{flex:1;overflow-y:auto;padding:16px 12px 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+
+.msg{max-width:85%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.6;animation:fadeIn .25s ease}
+.msg a{color:var(--v);text-decoration:underline}
+.msg-bot{align-self:flex-start;background:var(--w);color:var(--tx);border:1px solid var(--bd);border-bottom-left-radius:4px}
+.msg-user{align-self:flex-end;background:var(--v);color:var(--w);border-bottom-right-radius:4px}
+.msg-bot .sender{font-size:10px;font-weight:700;color:var(--v);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+
+.typing{align-self:flex-start;display:flex;gap:4px;padding:14px 18px;background:var(--w);border:1px solid var(--bd);border-radius:16px;border-bottom-left-radius:4px}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--mt);animation:bounce .6s infinite alternate}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+
+@keyframes bounce{to{transform:translateY(-5px);opacity:.4}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* === QUICK REPLIES === */
+.quick{display:flex;gap:6px;flex-wrap:wrap;padding:4px 12px 8px;flex-shrink:0}
+.qr{padding:8px 14px;border:1.5px solid var(--bd);border-radius:20px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;background:var(--w);color:var(--v);transition:all .15s;white-space:nowrap}
+.qr:hover{background:var(--sil);border-color:var(--v)}
+.qr:active{transform:scale(.96)}
+
+/* === INPUT === */
+.input-bar{display:flex;align-items:flex-end;gap:8px;padding:10px 12px;background:var(--w);border-top:1px solid var(--bd);flex-shrink:0}
+.input-bar textarea{flex:1;padding:10px 14px;border:1.5px solid var(--bd);border-radius:20px;font-family:inherit;font-size:14px;color:var(--tx);outline:none;resize:none;max-height:120px;min-height:42px;line-height:1.4;transition:border .15s}
+.input-bar textarea:focus{border-color:var(--v)}
+.input-bar textarea::placeholder{color:var(--mt)}
+.send-btn{width:42px;height:42px;border:none;border-radius:50%;background:var(--v);color:var(--w);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.send-btn:hover{background:var(--vd)}
+.send-btn:active{transform:scale(.93)}
+.send-btn:disabled{background:var(--bd);cursor:default}
+.send-btn svg{width:18px;height:18px;fill:currentColor}
+.voice-btn{width:42px;height:42px;border:none;border-radius:50%;background:var(--sil);color:var(--v);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.voice-btn:hover{background:var(--fog)}
+.voice-btn.rec{background:var(--rd);color:var(--w);animation:pulse 1s infinite}
+.voice-btn svg{width:18px;height:18px;fill:currentColor}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(169,50,70,.3)}50%{box-shadow:0 0 0 8px rgba(169,50,70,0)}}
+
+/* === CONFIG MODAL === */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{width:100%;max-width:500px;background:var(--w);border-radius:20px 20px 0 0;padding:24px 20px 32px;max-height:80vh;overflow-y:auto}
+.modal h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--nv);margin-bottom:4px}
+.modal p{font-size:13px;color:var(--mt);margin-bottom:16px;line-height:1.5}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--v);margin-bottom:5px}
+.fi{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:10px;font-family:inherit;font-size:14px;color:var(--tx);outline:none;background:var(--w)}
+.fi:focus{border-color:var(--v)}
+.bt{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 20px;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+.bt-v{background:var(--v);color:var(--w)}.bt-v:hover{background:var(--vd)}
+.bt-o{background:var(--sil);color:var(--v);margin-top:8px}.bt-o:hover{background:var(--fog)}
+
+/* === INSTALL BANNER === */
+.install-bar{display:none;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(135deg,var(--v),var(--vd));color:var(--w);font-size:13px;font-weight:600;flex-shrink:0;cursor:pointer}
+.install-bar .close{margin-left:auto;opacity:.7;background:none;border:none;color:var(--w);font-size:18px;cursor:pointer}
+
+/* Safe area for iOS */
+@supports(padding-bottom: env(safe-area-inset-bottom)){
+  .input-bar{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+}
+</style>
+</head>
+<body>
+
+<!-- Install banner -->
+<div class="install-bar" id="installBar" onclick="installApp()">
+  Installer Pluri'Quali sur votre appareil
+  <button class="close" onclick="event.stopPropagation();document.getElementById('installBar').style.display='none'">&times;</button>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <span class="nav-logo">Pluri'Quali</span><span class="nav-dot"></span>
+  <span class="nav-sub">Assistant IA</span>
+  <button class="nav-btn" onclick="openConfig()" title="Configuration">&#9881;</button>
+  <button class="nav-btn" onclick="clearChat()" title="Nouveau chat">&#10227;</button>
+</nav>
+
+<!-- Chat -->
+<div class="chat" id="chat"></div>
+
+<!-- Quick replies -->
+<div class="quick" id="quick"></div>
+
+<!-- Input -->
+<div class="input-bar">
+  <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">
+    <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm-1 4v2h2v-2a5 5 0 005-5h-2a3 3 0 01-6 0H8a5 5 0 005 5z"/></svg>
+  </button>
+  <textarea id="userInput" rows="1" placeholder="Posez votre question..." onkeydown="handleKey(event)" oninput="autoGrow(this)"></textarea>
+  <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+  </button>
+</div>
+
+<!-- Config modal -->
+<div class="modal-bg" id="configModal">
+  <div class="modal">
+    <h2>Configuration</h2>
+    <p>Connectez le chatbot a votre API OpenAI ou compatible pour activer les reponses IA.</p>
+    <div class="fg">
+      <label>Cle API</label>
+      <input class="fi" id="cfgKey" type="password" placeholder="sk-...">
+    </div>
+    <div class="fg">
+      <label>URL de l'API (optionnel)</label>
+      <input class="fi" id="cfgUrl" placeholder="https://api.openai.com/v1/chat/completions">
+    </div>
+    <div class="fg">
+      <label>Modele</label>
+      <input class="fi" id="cfgModel" placeholder="gpt-4o-mini">
+    </div>
+    <button class="bt bt-v" onclick="saveConfig()">Enregistrer</button>
+    <button class="bt bt-o" onclick="closeConfig()">Annuler</button>
+  </div>
+</div>
+
+<script>
+// ===================== CONFIG =====================
+var config = {
+  apiKey: '',
+  apiUrl: 'https://api.openai.com/v1/chat/completions',
+  model: 'gpt-4o-mini'
+};
+try {
+  var saved = JSON.parse(localStorage.getItem('pq-chat-config'));
+  if (saved) config = Object.assign(config, saved);
+} catch(e) {}
+
+// ===================== SYSTEM PROMPT =====================
+var SYSTEM_PROMPT = [
+  "Tu es l'assistant IA de Pluri'Quali, l'outil de controle qualite de l'agence Pluri'Elles.",
+  "Pluri'Elles est une agence specialisee dans les metiers de l'accueil, l'hospitality management, le courrier, le factotum, la numerisation et la reprographie.",
+  "",
+  "Ton role :",
+  "- Aider les responsables clients a preparer et realiser leurs controles qualite terrain",
+  "- Expliquer les criteres d'evaluation : Presentation & Tenue, Comportement & Sens du service, Connaissances & Formation, Qualite des prestations, Valeur ajoutee",
+  "- Donner des conseils pour ameliorer les scores qualite",
+  "- Aider a rediger des plans d'actions correctives",
+  "- Repondre aux questions sur les procedures et standards Pluri'Elles",
+  "",
+  "Criteres par section :",
+  "1. Presentation & Tenue : tenue conforme, chaussures, badge, hygiene, posture",
+  "2. Comportement & Sens du service : accueil chaleureux, proactivite, gestion demandes, politesse, pas de telephone perso, esprit d'equipe",
+  "3. Connaissances & Formation : procedures du site, maitrise des outils, consignes securite, quizz formation, cahier de consignes",
+  "4. Qualite des prestations : respect horaires, qualite d'execution, proprete du poste, gestion des flux, reporting a jour",
+  "5. Valeur ajoutee : propositions d'amelioration, initiative positive, satisfaction client, implication sur site",
+  "",
+  "Notation : Conforme / A ameliorer / Non conforme / N/A",
+  "Score = nombre de Conformes / (Conformes + A ameliorer + Non conformes) x 100",
+  "Niveaux : >= 80% Excellent, >= 60% Satisfaisant, >= 40% A ameliorer, < 40% Insuffisant",
+  "",
+  "Reponds toujours en francais, de maniere professionnelle mais accessible.",
+  "Sois concis et pratique dans tes reponses."
+].join("\n");
+
+var messages = [{ role: 'system', content: SYSTEM_PROMPT }];
+
+// ===================== KNOWLEDGE BASE (offline) =====================
+var KB = [
+  { q: ['bonjour','salut','hello','coucou','hey'], r: "Bonjour ! Je suis l'assistant Pluri'Quali. Comment puis-je vous aider aujourd'hui ?\n\nJe peux vous aider avec :\n- La preparation d'un controle qualite\n- L'explication des criteres d'evaluation\n- Des conseils pour ameliorer les scores\n- La redaction de plans d'actions" },
+  { q: ['critere','criteres','evaluation','noter','notation'], r: "Les controles Pluri'Quali s'articulent autour de 5 sections :\n\n1. **Presentation & Tenue** (5 criteres) : tenue, chaussures, badge, hygiene, posture\n2. **Comportement & Sens du service** (6 criteres) : accueil, proactivite, gestion demandes, politesse, telephone, equipe\n3. **Connaissances & Formation** (5 criteres) : procedures, outils, securite, quizz, consignes\n4. **Qualite des prestations** (5 criteres) : horaires, execution, proprete, flux, reporting\n5. **Valeur ajoutee** (4 criteres) : amelioration, initiative, satisfaction, implication\n\nChaque critere est note : **Conforme**, **A ameliorer**, **Non conforme** ou **N/A**." },
+  { q: ['score','calcul','pourcentage','note'], r: "Le score est calcule ainsi :\n\n**Score = Conformes / (Conformes + A ameliorer + Non conformes) x 100**\n\nLes criteres N/A ne sont pas comptabilises.\n\nNiveaux :\n- **>= 80%** : Excellent\n- **>= 60%** : Satisfaisant\n- **>= 40%** : A ameliorer\n- **< 40%** : Insuffisant" },
+  { q: ['plan','action','corrective','ameliorer','amelioration','recommandation'], r: "Pour un bon plan d'actions, structurez-le ainsi :\n\n1. **Constat** : decrivez precisement le probleme observe\n2. **Action corrective** : ce qui doit etre fait\n3. **Responsable** : qui met en oeuvre\n4. **Echeance** : delai de realisation\n5. **Suivi** : comment verifier la mise en oeuvre\n\nExemple : *\"Badge non porte → Fournir un nouveau badge + rappel procedure → Responsable site → Sous 48h → Verification au prochain controle\"*" },
+  { q: ['tenue','presentation','badge','uniforme','chaussure'], r: "Pour la section **Presentation & Tenue** :\n\n- **Tenue conforme** : vetements propres, repasses, aux couleurs de l'entreprise\n- **Chaussures** : adaptees au poste, propres, en bon etat\n- **Badge** : visible, en bon etat, bien positionne\n- **Hygiene** : mains propres, cheveux soignes\n- **Posture** : droite, professionnelle, pas de bras croises" },
+  { q: ['accueil','comportement','service','politesse','proactivite'], r: "Pour la section **Comportement & Sens du service** :\n\n- **Accueil chaleureux** : sourire, contact visuel, formule de bienvenue\n- **Proactivite** : anticiper les besoins, ne pas attendre d'etre sollicite\n- **Gestion des demandes** : ecoute active, reformulation, solution rapide\n- **Politesse** : vouvoiement, formules de politesse\n- **Telephone** : pas d'usage personnel visible\n- **Esprit d'equipe** : entraide, communication entre collegues" },
+  { q: ['visite','controle','audit','preparer','preparation'], r: "Pour preparer un controle qualite :\n\n1. **Avant** : relisez les resultats du dernier controle, identifiez les points a surveiller\n2. **Materiel** : smartphone charge, application Pluri'Quali ouverte\n3. **Observation** : arrivez discretement, observez avant d'interagir\n4. **Evaluation** : soyez objectif, notez des faits concrets\n5. **Photos** : photographiez les elements pertinents (positifs et negatifs)\n6. **Echange** : debriefez avec l'agent apres le controle\n7. **Rapport** : validez et envoyez le rapport dans la journee" },
+  { q: ['metier','accueil','hotesse','courrier','factotum','hospitality','numerisation','reprographie'], r: "Les metiers couverts par Pluri'Quali :\n\n- **Accueil / Hotesse** : accueil visiteurs, standard telephonique\n- **Agent Courrier** : tri, distribution, affranchissement\n- **Factotum / Agent polyvalent** : petites maintenances, logistique\n- **Hospitality Manager** : coordination des services, relation client\n- **Agent Property Manager** : gestion des espaces\n- **Agent Numerisation** : scan, indexation de documents\n- **Agent Reprographie** : impressions, reliures, copies" },
+  { q: ['aide','help','comment','fonctionnement','utiliser'], r: "Voici comment utiliser cet assistant :\n\n- **Posez vos questions** en langage naturel\n- Utilisez les **suggestions rapides** en bas de l'ecran\n- Activez la **dictee vocale** avec le bouton micro\n- Configurez l'**API IA** via l'icone engrenage pour des reponses plus avancees\n\nSans cle API, je reponds grace a ma base de connaissances integree sur les procedures Pluri'Quali." }
+];
+
+// ===================== UI FUNCTIONS =====================
+var chatEl = document.getElementById('chat');
+var inputEl = document.getElementById('userInput');
+var quickEl = document.getElementById('quick');
+
+function addMessage(text, isUser) {
+  var div = document.createElement('div');
+  div.className = 'msg ' + (isUser ? 'msg-user' : 'msg-bot');
+  if (!isUser) {
+    var s = document.createElement('div');
+    s.className = 'sender';
+    s.textContent = "Pluri'Quali";
+    div.appendChild(s);
+  }
+  var content = document.createElement('div');
+  // Simple markdown: bold, line breaks
+  var html = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                 .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                 .replace(/\n/g, '<br>');
+  content.innerHTML = html;
+  div.appendChild(content);
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function showTyping() {
+  var div = document.createElement('div');
+  div.className = 'typing';
+  div.id = 'typing';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function hideTyping() {
+  var t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+function showQuickReplies(items) {
+  quickEl.innerHTML = '';
+  items.forEach(function(text) {
+    var btn = document.createElement('button');
+    btn.className = 'qr';
+    btn.textContent = text;
+    btn.onclick = function() {
+      inputEl.value = text;
+      sendMessage();
+    };
+    quickEl.appendChild(btn);
+  });
+}
+
+function clearQuickReplies() {
+  quickEl.innerHTML = '';
+}
+
+// ===================== SEND =====================
+function sendMessage() {
+  var text = inputEl.value.trim();
+  if (!text) return;
+  inputEl.value = '';
+  inputEl.style.height = 'auto';
+  clearQuickReplies();
+  addMessage(text, true);
+  messages.push({ role: 'user', content: text });
+
+  if (config.apiKey) {
+    callAPI(text);
+  } else {
+    respondOffline(text);
+  }
+}
+
+// ===================== OFFLINE RESPONSE =====================
+function respondOffline(text) {
+  showTyping();
+  var lower = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  var best = null, bestScore = 0;
+
+  KB.forEach(function(entry) {
+    var score = 0;
+    entry.q.forEach(function(keyword) {
+      var kw = keyword.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      if (lower.indexOf(kw) >= 0) score++;
+    });
+    if (score > bestScore) { bestScore = score; best = entry; }
+  });
+
+  setTimeout(function() {
+    hideTyping();
+    if (best && bestScore > 0) {
+      addMessage(best.r, false);
+    } else {
+      addMessage("Je n'ai pas de reponse precise a cette question dans ma base de connaissances.\n\nPour des reponses plus completes, vous pouvez configurer une cle API via l'icone ⚙ en haut.\n\nSinon, essayez de me poser des questions sur :\n- Les criteres d'evaluation\n- Le calcul du score\n- La preparation d'un controle\n- Les plans d'actions", false);
+      showQuickReplies(['Criteres d\'evaluation', 'Calcul du score', 'Preparer un controle', 'Plan d\'actions']);
+    }
+    messages.push({ role: 'assistant', content: best ? best.r : 'Question non trouvee dans la base.' });
+  }, 600 + Math.random() * 800);
+}
+
+// ===================== API RESPONSE =====================
+function callAPI(text) {
+  showTyping();
+  fetch(config.apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + config.apiKey
+    },
+    body: JSON.stringify({
+      model: config.model,
+      messages: messages,
+      max_tokens: 1024,
+      temperature: 0.7
+    })
+  })
+  .then(function(r) {
+    if (!r.ok) throw new Error('API error ' + r.status);
+    return r.json();
+  })
+  .then(function(data) {
+    hideTyping();
+    var reply = data.choices[0].message.content;
+    messages.push({ role: 'assistant', content: reply });
+    addMessage(reply, false);
+  })
+  .catch(function(err) {
+    hideTyping();
+    addMessage("Erreur de connexion a l'API : " + err.message + "\n\nVerifiez votre cle API dans les parametres (⚙).", false);
+  });
+}
+
+// ===================== VOICE =====================
+var recognition = null;
+function toggleVoice() {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { addMessage("La dictee vocale n'est pas disponible sur ce navigateur.", false); return; }
+  var btn = document.getElementById('voiceBtn');
+  if (recognition) {
+    recognition.stop();
+    return;
+  }
+  recognition = new SR();
+  recognition.lang = 'fr-FR';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  btn.classList.add('rec');
+  recognition.onresult = function(e) {
+    inputEl.value = e.results[0][0].transcript;
+    autoGrow(inputEl);
+  };
+  recognition.onend = function() {
+    btn.classList.remove('rec');
+    recognition = null;
+  };
+  recognition.onerror = function() {
+    btn.classList.remove('rec');
+    recognition = null;
+  };
+  recognition.start();
+}
+
+// ===================== CONFIG =====================
+function openConfig() {
+  document.getElementById('cfgKey').value = config.apiKey;
+  document.getElementById('cfgUrl').value = config.apiUrl;
+  document.getElementById('cfgModel').value = config.model;
+  document.getElementById('configModal').classList.add('open');
+}
+function closeConfig() {
+  document.getElementById('configModal').classList.remove('open');
+}
+function saveConfig() {
+  config.apiKey = document.getElementById('cfgKey').value.trim();
+  config.apiUrl = document.getElementById('cfgUrl').value.trim() || 'https://api.openai.com/v1/chat/completions';
+  config.model = document.getElementById('cfgModel').value.trim() || 'gpt-4o-mini';
+  try { localStorage.setItem('pq-chat-config', JSON.stringify(config)); } catch(e) {}
+  closeConfig();
+  addMessage("Configuration enregistree. " + (config.apiKey ? "L'IA est activee." : "Mode hors-ligne (base de connaissances)."), false);
+}
+
+// ===================== UTILS =====================
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+function autoGrow(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+function clearChat() {
+  chatEl.innerHTML = '';
+  messages = [{ role: 'system', content: SYSTEM_PROMPT }];
+  welcome();
+}
+
+// ===================== PWA INSTALL =====================
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBar').style.display = 'flex';
+});
+function installApp() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(function() { deferredPrompt = null; document.getElementById('installBar').style.display = 'none'; });
+}
+
+// ===================== SERVICE WORKER =====================
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
+
+// ===================== WELCOME =====================
+function welcome() {
+  addMessage("Bienvenue sur l'assistant **Pluri'Quali** !\n\nJe suis la pour vous aider avec vos controles qualite terrain. Que puis-je faire pour vous ?", false);
+  showQuickReplies([
+    'Criteres d\'evaluation',
+    'Preparer un controle',
+    'Calcul du score',
+    'Plan d\'actions',
+    'Les metiers Pluri\'Elles'
+  ]);
+}
+welcome();
+</script>
+</body>
+</html>
