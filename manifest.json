@@ -1,0 +1,25 @@
+{
+  "name": "Pluri'IA — Assistant Intelligent",
+  "short_name": "Pluri'IA",
+  "description": "Assistant intelligent de l'Agence Pluri'Elles",
+  "start_url": "./chatbot.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0D0B11",
+  "theme_color": "#6247AA",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
